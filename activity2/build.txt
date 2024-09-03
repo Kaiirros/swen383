@@ -1,0 +1,9 @@
+WEATHER STATION APPLICATION - DANIEL MCKEE
+
+To start this application:
+    Run WeatherStationStarter.java
+    [In command line] 
+        > java WeatherStationStarter.java
+
+To interact: 
+    Select your preference of AWTUI, SwingUI or Console display for the weather station data

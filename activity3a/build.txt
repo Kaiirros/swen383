@@ -1,0 +1,6 @@
+ACTIVITY 3A - DANIEL MCKEE
+
+To start this application:
+    Run SwingUI.java
+    [In command line] 
+        > java SwingUI.java
