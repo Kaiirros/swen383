@@ -1,0 +1,11 @@
+Assignment 3b - Daniel McKee
+
+To run Weather Station program(s)
+
+    - SWING UI 
+        [In Command Prompt]
+        > "java SwingUI.java"
+    
+    - Text UI
+        [In Command Prompt]
+        > "java TextUI.java"

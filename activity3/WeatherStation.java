@@ -25,20 +25,27 @@ import java.util.Observable ;
 @SuppressWarnings("deprecation")
 public class WeatherStation extends Observable implements Runnable {
 
-    private final KelvinTempSensor sensor ; // Temperature sensor.
+    private final KelvinTempSensor kelvinSensor ; // Temperature sensor.
+    private final Barometer barometerSensor ; // Temperature sensor.
+
 
     private final long PERIOD = 1000 ;      // 1 sec = 1000 ms
     private final int KTOC = -27315 ;       // Kelvin to Celsius conversion.
 
-    private int currentReading ;
+    private int kelvinCurrentReading ;
+    private double barometerCurrentReading ;
+
 
     /*
      * When a WeatherStation object is created, it in turn creates the sensor
      * object it will use.
      */
     public WeatherStation() {
-        sensor = new KelvinTempSensor() ;
-        currentReading = sensor.reading() ;
+        kelvinSensor = new KelvinTempSensor() ;
+        barometerSensor = new Barometer();
+        kelvinCurrentReading = kelvinSensor.reading() ;
+        barometerCurrentReading = barometerSensor.pressure();
+
     }
 
     /*
@@ -56,7 +63,8 @@ public class WeatherStation extends Observable implements Runnable {
              * Get next reading and notify any Observers.
              */
             synchronized(this) {
-                currentReading = sensor.reading() ;
+                kelvinCurrentReading = kelvinSensor.reading() ;
+                barometerCurrentReading = barometerSensor.pressure();
             }
             setChanged() ;
             notifyObservers() ;
@@ -68,7 +76,7 @@ public class WeatherStation extends Observable implements Runnable {
      * double precision number.
      */
     public synchronized double getCelsius() {
-        return (currentReading + KTOC) / 100.0 ;
+        return (kelvinCurrentReading + KTOC) / 100.0 ;
     }
 
     /*
@@ -76,6 +84,28 @@ public class WeatherStation extends Observable implements Runnable {
      * double precision number.
      */
     public synchronized double getKelvin() {
-        return currentReading / 100.0 ;
+        return kelvinCurrentReading / 100.0 ;
+    }
+
+    /*
+     * Return the current reading in degrees Fahrenheit as a
+     * double precision number.
+     */
+    public synchronized double getFahrenheit() {
+        return ((kelvinCurrentReading + KTOC)/100.0)*1.8 + 32;
+    }
+
+    /*
+     * Return the current pressure
+     */
+    public synchronized double getPressureInches() {
+        return barometerCurrentReading;
+    }
+
+    /*
+     * Return the current pressure in millibars
+     */
+    public synchronized double getPressureMillibars() {
+        return barometerCurrentReading * 33.864;
     }
 }
